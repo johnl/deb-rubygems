@@ -1,7 +1,8 @@
-diff -Nur -x '*.orig' -x '*~' libgems-ruby/lib/rubygems/commands/update_command.rb libgems-ruby.new/lib/rubygems/commands/update_command.rb
---- libgems-ruby/lib/rubygems/commands/update_command.rb	2008-08-13 18:49:11.000000000 +0100
-+++ libgems-ruby.new/lib/rubygems/commands/update_command.rb	2008-08-13 18:58:03.000000000 +0100
-@@ -44,6 +44,16 @@
+diff --git a/lib/rubygems/commands/update_command.rb b/lib/rubygems/commands/update_command.rb
+index 9974b2b..5705412 100644
+--- a/lib/rubygems/commands/update_command.rb
++++ b/lib/rubygems/commands/update_command.rb
+@@ -44,6 +44,16 @@ class Gem::Commands::UpdateCommand < Gem::Command
      "#{program_name} GEMNAME [GEMNAME ...]"
    end
  
@@ -18,12 +19,12 @@ diff -Nur -x '*.orig' -x '*~' libgems-ruby/lib/rubygems/commands/update_command.
    def execute
      hig = {}
  
-@@ -54,6 +64,8 @@
+@@ -54,6 +64,8 @@ class Gem::Commands::UpdateCommand < Gem::Command
          fail "No gem names are allowed with the --system option"
        end
  
 +      exec update_rubygems_command
 +
-       spec = Gem::Specification.new
-       spec.name = 'rubygems-update'
-       spec.version = Gem::Version.new Gem::RubyGemsVersion
+       rubygems_update = Gem::Specification.new
+       rubygems_update.name = 'rubygems-update'
+       rubygems_update.version = Gem::Version.new Gem::RubyGemsVersion
