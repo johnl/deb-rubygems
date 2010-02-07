@@ -1,4 +1,3 @@
-require 'test/unit'
 require File.join(File.expand_path(File.dirname(__FILE__)), 'gemutilities')
 require File.join(File.expand_path(File.dirname(__FILE__)),
                   'gem_installer_test_case')
@@ -12,8 +11,10 @@ class TestGemCommandsUninstallCommand < GemInstallerTestCase
     ui = MockGemUi.new
     util_setup_gem ui
 
-    use_ui ui do
-      @installer.install
+    build_rake_in do
+      use_ui ui do
+        @installer.install
+      end
     end
 
     @cmd = Gem::Commands::UninstallCommand.new
@@ -46,15 +47,36 @@ class TestGemCommandsUninstallCommand < GemInstallerTestCase
 
   def test_execute_not_installed
     @cmd.options[:args] = ["foo"]
-    e = assert_raise(Gem::InstallError) do
+    e = assert_raises Gem::InstallError do
       use_ui @ui do
         @cmd.execute
       end
     end
 
-    assert_match(/\AUnknown gem foo >= 0$/, e.message)
+    assert_match(/\Acannot uninstall, check `gem list -d foo`$/, e.message)
     output = @ui.output.split "\n"
-    assert output.empty?, "UI output should be empty after an uninstall error"
+    assert_empty output, "UI output should be empty after an uninstall error"
+  end
+
+  def test_execute_prerelease
+    @spec = quick_gem "pre", "2.b"
+    @gem = File.join @tempdir, "#{@spec.full_name}.gem"
+    FileUtils.touch @gem
+
+    util_setup_gem
+
+    use_ui @ui do
+      @installer.install
+    end
+
+    @cmd.options[:args] = ["pre"]
+
+    use_ui @ui do
+      @cmd.execute
+    end
+
+    output = @ui.output
+    assert_match(/Successfully uninstalled/, output)
   end
 end
 

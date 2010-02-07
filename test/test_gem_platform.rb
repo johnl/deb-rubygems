@@ -1,5 +1,4 @@
 require File.join(File.expand_path(File.dirname(__FILE__)), 'gemutilities')
-require 'test/unit'
 require 'rubygems/platform'
 require 'rbconfig'
 
@@ -92,6 +91,12 @@ class TestGemPlatform < RubyGemTestCase
     platform = Gem::Platform.new 'i386-mswin32-80'
 
     assert_equal expected, platform.to_a, 'i386-mswin32-80'
+
+    expected = ['x86', 'solaris', '2.10']
+
+    platform = Gem::Platform.new 'i386-solaris-2.10'
+
+    assert_equal expected, platform.to_a, 'i386-solaris-2.10'
   end
 
   def test_initialize_mswin32_vc6
@@ -128,6 +133,12 @@ class TestGemPlatform < RubyGemTestCase
     assert_equal '1', platform.version
   end
 
+  def test_empty
+    platform = Gem::Platform.new 'cpu-other_platform1'
+    assert_respond_to platform, :empty?
+    assert_equal false, platform.empty?
+  end
+
   def test_to_s
     if win_platform? then
       assert_equal 'x86-mswin32-60', Gem::Platform.local.to_s
@@ -141,8 +152,8 @@ class TestGemPlatform < RubyGemTestCase
     other = Gem::Platform.new %w[cpu other_platform 1]
 
     assert_equal my, my
-    assert_not_equal my, other
-    assert_not_equal other, my
+    refute_equal my, other
+    refute_equal other, my
   end
 
   def test_equals3
@@ -150,8 +161,8 @@ class TestGemPlatform < RubyGemTestCase
     other = Gem::Platform.new %w[cpu other_platform 1]
 
     assert(my === my)
-    assert !(other === my)
-    assert !(my === other)
+    refute(other === my)
+    refute(my === other)
   end
 
   def test_equals3_cpu
@@ -162,10 +173,10 @@ class TestGemPlatform < RubyGemTestCase
     util_set_arch 'powerpc-darwin8'
     assert((ppc_darwin8 === Gem::Platform.local), 'powerpc =~ universal')
     assert((uni_darwin8 === Gem::Platform.local), 'powerpc =~ universal')
-    assert !(x86_darwin8 === Gem::Platform.local), 'powerpc =~ universal'
+    refute((x86_darwin8 === Gem::Platform.local), 'powerpc =~ universal')
 
     util_set_arch 'i686-darwin8'
-    assert !(ppc_darwin8 === Gem::Platform.local), 'powerpc =~ universal'
+    refute((ppc_darwin8 === Gem::Platform.local), 'powerpc =~ universal')
     assert((uni_darwin8 === Gem::Platform.local), 'x86 =~ universal')
     assert((x86_darwin8 === Gem::Platform.local), 'powerpc =~ universal')
 
@@ -186,8 +197,8 @@ class TestGemPlatform < RubyGemTestCase
     assert((x86_darwin  === Gem::Platform.local), 'x86_darwin === x86_darwin8')
     assert((x86_darwin8 === Gem::Platform.local), 'x86_darwin8 === x86_darwin8')
 
-    assert !(x86_darwin7 === Gem::Platform.local), 'x86_darwin7 === x86_darwin8'
-    assert !(x86_darwin9 === Gem::Platform.local), 'x86_darwin9 === x86_darwin8'
+    refute((x86_darwin7 === Gem::Platform.local), 'x86_darwin7 === x86_darwin8')
+    refute((x86_darwin9 === Gem::Platform.local), 'x86_darwin9 === x86_darwin8')
   end
 
   def test_equals_tilde
@@ -199,10 +210,10 @@ class TestGemPlatform < RubyGemTestCase
     # oddballs
     assert_match 'i386-mswin32-mq5.3', Gem::Platform.local
     assert_match 'i386-mswin32-mq6',   Gem::Platform.local
-    deny_match   'win32-1.8.2-VC7',    Gem::Platform.local
-    deny_match   'win32-1.8.4-VC6',    Gem::Platform.local
-    deny_match   'win32-source',       Gem::Platform.local
-    deny_match   'windows',            Gem::Platform.local
+    refute_match 'win32-1.8.2-VC7',    Gem::Platform.local
+    refute_match 'win32-1.8.4-VC6',    Gem::Platform.local
+    refute_match 'win32-source',       Gem::Platform.local
+    refute_match 'windows',            Gem::Platform.local
 
     util_set_arch 'i686-linux'
     assert_match 'i486-linux', Gem::Platform.local
@@ -228,18 +239,6 @@ class TestGemPlatform < RubyGemTestCase
 
     util_set_arch 'sparc-solaris2.8'
     assert_match 'sparc-solaris2.8-mq5.3', Gem::Platform.local
-  end
-
-  def assert_match(pattern, platform, message = '')
-    full_message = build_message message, "<?> expected to be =~\n<?>.",
-                                 platform, pattern
-    assert_block(full_message) { platform =~ pattern }
-  end
-
-  def deny_match(pattern, platform, message = '')
-    full_message = build_message message, "<?> expected to be !~\n<?>.",
-                                 platform, pattern
-    assert_block(full_message) { platform !~ pattern }
   end
 
 end

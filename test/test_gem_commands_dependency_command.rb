@@ -1,4 +1,3 @@
-require 'test/unit'
 require File.join(File.expand_path(File.dirname(__FILE__)), 'gemutilities')
 require 'rubygems/commands/dependency_command'
 
@@ -44,6 +43,8 @@ Gem a-1
 
 Gem a-2
 
+Gem a-3.a
+
 Gem a_evil-9
 
 Gem b-2
@@ -61,7 +62,7 @@ Gem pl-1-x86-linux
   def test_execute_no_match
     @cmd.options[:args] = %w[foo]
 
-    assert_raise MockGemUi::TermError do
+    assert_raises MockGemUi::TermError do
       use_ui @ui do
         @cmd.execute
       end
@@ -100,6 +101,8 @@ Gem pl-1-x86-linux
 Gem a-1
 
 Gem a-2
+
+Gem a-3.a
 
 Gem a_evil-9
 
@@ -146,7 +149,7 @@ Gem foo-2
     @cmd.options[:reverse_dependencies] = true
     @cmd.options[:domain] = :remote
 
-    assert_raise MockGemUi::TermError do
+    assert_raises MockGemUi::TermError do
       use_ui @ui do
         @cmd.execute
       end
