@@ -32,7 +32,7 @@ build/rubygems1.9::
 
 build/rubygems-doc::
 	find lib -name "*.rb" | xargs $(RDOC) --fmt html --title RubyGems \
-	  --line-numbers --inline-source --main README -o html README TODO
+	  --line-numbers --inline-source --main README -o html README
 
 install/rubygems1.8::
 	find $(CURDIR)/debian/ -type f -name "*.in" | \

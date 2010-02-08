@@ -3,11 +3,9 @@ Section: interpreters
 Priority: optional
 Maintainer: Ubuntu MOTU Developers <ubuntu-motu@lists.ubuntu.com>
 XSBC-Original-Maintainer: Daigo Moriwaki <daigo@debian.org>
-Build-Depends: cdbs, debhelper (>= 4.0.0), ruby1.8, rdoc, ruby1.9
+Build-Depends: cdbs, debhelper (>= 4.0.0), ruby1.8, rdoc, ruby1.9.1
 Standards-Version: 3.8.0
 Homepage: http://rubygems.org/
-XS-Vcs-git: git://github.com/NeilW/deb-rubygems.git
-XS-Vcs-browser: http://github.com/NeilW/deb-rubygems/tree/master
 
 Package: rubygems
 Architecture: all
@@ -41,12 +39,12 @@ Description: package management framework for Ruby libraries/applications
  .
  This package provides RubyGems with Ruby 1.8.
 
-Package: rubygems1.9
+Package: rubygems1.9.1
 Architecture: all
-Depends: ruby1.9 (>= 1.9.0.1-5), rdoc1.9
-Suggests: ruby1.9-dev (>= 1.9.0.1-5), build-essential, rubygems-doc
-Conflicts: gem1.9
-Replaces: gem1.9
+Depends: ruby1.9.1 (>= 1.9.0.1-5), rdoc1.9.1
+Suggests: ruby1.9.1-dev (>= 1.9.1.1-5), build-essential, rubygems-doc
+Conflicts: gem1.9.1
+Replaces: gem1.9.1
 Description: package management framework for Ruby libraries/applications
  This is a way to package Ruby libraries/applications for distribution.
  RubyGems provides the ability to manage concurrent versions of libraries and
@@ -61,7 +59,7 @@ Description: package management framework for Ruby libraries/applications
 Package: rubygems-doc
 Section: doc
 Architecture: all
-Suggests: www-browse, ruby1.8 | ruby1.9
+Suggests: www-browse, ruby1.8 | ruby1.9.1
 Description: package management framework for Ruby libraries/applications
  This is a way to package Ruby libraries/applications for distribution.
  RubyGems provides the ability to manage concurrent versions of libraries and
