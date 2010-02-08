@@ -1,5 +1,5 @@
 #    RubyGems - Debian packaging alterations
-#    Copyright (C) 2008, Neil Wilson, Brightbox Systems
+#    Copyright (C) 2008, 2009, 2010 Neil Wilson, John Leach, Brightbox Systems
 #    
 #    This file is part of Rubygems packaging
 #
@@ -21,8 +21,11 @@ module Gem
   # Set the default gem installation directories and paths to the Debian
   # defaults by poking the correct values into the ENV hash.
   ENV['GEM_HOME'] = File.join('','var','lib','gems',ConfigMap[:ruby_version])
-  # I don't want to see 'default_dir' ever.
+  # I don't want to see 'default_dir'.
   ENV['GEM_PATH'] = user_dir
+
+  # Support loading any gems installed by a non-packaged version of rubygems
+  ConfigFile::OPERATING_SYSTEM_DEFAULTS["gempath"] = [default_dir]
 
   # Always remove the executable when the gem is removed.
   # (No good reason for them to remain and they complicate the 
