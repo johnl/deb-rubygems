@@ -1,3 +1,9 @@
+libgems-ruby (1.3.5-1bbox2) hardy; urgency=low
+
+  * Support loading any gems installed by a non-packaged version of rubygems 
+
+ -- John <john@brightbox.co.uk>  Mon, 08 Feb 2010 15:38:30 +0000
+
 libgems-ruby (1.3.5-1bbox1) hardy; urgency=low
 
   * New upstream version
